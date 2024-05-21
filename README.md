@@ -9,5 +9,6 @@
 9. Next, open terminal with two different tabs
 10. In one tab, goto app-client and run - `npm run start`
 11. In the second tab, goto app-server and run - `npm run dev`
+12. Once, commands from previous two steps are running, access the todo app at - http://localhost:3000 and the server runs at - http://localhost:4000
 
 #### Note: Step 7 & 8 are supposed to be executed from app-server folder from terminal
