@@ -12,6 +12,7 @@ interface EditTaskProps {
   showDialog: boolean;
   handleClose: (status?: string) => void;
   task: Task;
+  handleFailedRequest: () => void;
 }
 
 type TaskKeys = "title" | "description" | "status" | "dueDate";
@@ -27,6 +28,7 @@ export default function EditTaskDialog({
   showDialog,
   handleClose,
   task,
+  handleFailedRequest
 }: EditTaskProps) {
   const elements: FormElement[] = [
     {
@@ -72,14 +74,20 @@ export default function EditTaskDialog({
   const handleFormSubmit = async (data: Task) => {
     try {
       let keys = Object.keys(data);
-      console.log(data);
+      
       let updatedDataKeys = keys.filter((key) => {
         let column: TaskKeys = key as TaskKeys;
 
-        if (data[column] !== task[column]) {
+        if (column !== "dueDate" && task[column] !== data[column]) {
+          return true;
+        } else if (
+          column === "dueDate" && 
+          task.dueDate !== dayjs(data.dueDate).format("DD/MM/YYYY")) 
+        {
           return true;
         }
       });
+
       if (updatedDataKeys.length >= 1) {
         let payload: any = { ...task };
         updatedDataKeys.forEach((key) => {
@@ -87,21 +95,21 @@ export default function EditTaskDialog({
 
           payload[key] = data[column];
         });
-
+        delete payload.id;
+        delete payload.userId;
         await updateTask(task.id as number, payload);
 
         handleClose("success");
         return;
       }
 
-      handleClose("not-updated");
     } catch (err) {
-      handleClose("failed");
+      handleFailedRequest()
     }
   };
 
   return (
-    <Dialog open={showDialog} onClose={() => handleClose()}>
+    <Dialog open={showDialog} onClose={() => handleClose}>
       <DialogTitle sx={{ textAlign: "center" }}>Update Task</DialogTitle>
       <DialogContent>
         <CustomForm

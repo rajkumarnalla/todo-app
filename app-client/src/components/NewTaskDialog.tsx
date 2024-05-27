@@ -11,6 +11,7 @@ import { newTask } from "../services/taskService";
 interface NewTaskProps {
   showDialog: boolean;
   handleClose: (status?: string) => void;
+  handleFailedRequest: () => void;
 }
 
 const schema = yup.object().shape({
@@ -23,6 +24,7 @@ const schema = yup.object().shape({
 export default function NewTaskDialog({
   showDialog,
   handleClose,
+  handleFailedRequest
 }: NewTaskProps) {
   const elements: FormElement[] = [
     {
@@ -36,26 +38,6 @@ export default function NewTaskDialog({
       name: "description",
     },
     {
-      type: "select",
-      label: "Status",
-      name: "status",
-      defaultValue: "To Do",
-      options: [
-        {
-          label: "To Do",
-          value: "To Do",
-        },
-        {
-          label: "In Progress",
-          value: "In Progress",
-        },
-        {
-          label: "Done",
-          value: "Done",
-        },
-      ],
-    },
-    {
       type: "date",
       label: "Due Date",
       name: "dueDate",
@@ -65,13 +47,14 @@ export default function NewTaskDialog({
 
   const handleFormSubmit = async (data: Task) => {
     try {
-      const user = getUserData();
       await newTask({
         ...data,
-        userId: user.userId,
+        status: "To Do"
       });
       handleClose("success");
-    } catch (err) {}
+    } catch (err) {
+      handleFailedRequest();
+    }
   };
 
   return (
@@ -82,7 +65,7 @@ export default function NewTaskDialog({
           elements={elements}
           yupSchema={schema}
           handleFormSubmit={handleFormSubmit}
-          handleClose={() => handleClose()}
+          handleClose={handleClose}
         />
       </DialogContent>
     </Dialog>

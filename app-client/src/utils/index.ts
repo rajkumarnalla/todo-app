@@ -51,7 +51,7 @@ export interface CustomFormProps {
   elements: FormElement[];
   yupSchema: any;
   handleFormSubmit: (data: any) => void;
-  handleClose?: () => void;
+  handleClose?: (status?: string) => void;
 }
 
 export interface LoginUser {

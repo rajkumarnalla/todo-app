@@ -24,6 +24,20 @@ const statusColors: ColorDef = {
   'Done': 'green',
 }
 
+export function StatusText({status}: {status: string}) {
+  return (
+    <span style={{
+        background: statusColors[status], 
+        padding: '2px 4px', 
+        borderRadius: '4px', 
+        color: 'white'
+      }}
+    >
+      {status}
+    </span>
+  )
+}
+
 export function DataTable({
   columnLabels,
   columns,
@@ -41,7 +55,7 @@ export function DataTable({
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row) => (
+          {data?.map((row) => (
             <TableRow
               key={row.title}
               sx={{
@@ -56,11 +70,16 @@ export function DataTable({
                     ? dayjs(row[el]).format("DD/MM/YYYY")
                     : el !== 'status' && row[el]}
 
-                  {el === 'status' && <span style={{background: statusColors[row.status], padding: '2px 4px', borderRadius: '4px', color: 'white'}}>{row[el]}</span>}
+                  {el === 'status' && <StatusText status={row[el]}/>}
                 </TableCell>
               ))}
             </TableRow>
           ))}
+          {data?.length === 0 && <TableRow>
+            <TableCell align="center" colSpan={4}>
+              No Tasks Found
+            </TableCell>
+          </TableRow>}
         </TableBody>
       </Table>
     </TableContainer>

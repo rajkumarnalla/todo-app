@@ -1,4 +1,4 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import path from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
@@ -35,5 +35,16 @@ app.use(
 app.use("/auth", authRouter);
 app.use("/users", usersRouter);
 app.use("/tasks", auth, taskRouter);
+
+// Global error handler
+app.use((err: any, req: Request, res: Response, next: NextFunction): void => {
+  console.error(err?.stack); // Log the error stack for debugging
+  res.status(err?.status || 500); // Set the status code
+  res.json({
+    error: {
+      message: err?.message || "Request Failed",
+    },
+  }); // Send a JSON response with the error message
+});
 
 module.exports = app;

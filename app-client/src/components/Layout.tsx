@@ -5,7 +5,7 @@ export function Layout() {
   return (
     <div>
       <Header />
-      <main>
+      <main style={{marginTop: '64px'}}>
         <Outlet />
       </main>
     </div>

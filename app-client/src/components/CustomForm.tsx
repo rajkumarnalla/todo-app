@@ -48,6 +48,7 @@ export default function CustomForm({
             case "textfield":
               return (
                 <Controller
+                  key={el.name}
                   name={el.name}
                   control={control}
                   defaultValue={el.defaultValue || ""}
@@ -67,7 +68,7 @@ export default function CustomForm({
               );
             case "select":
               return (
-                <FormControl fullWidth sx={{ mt: 2 }}>
+                <FormControl key={el.name} fullWidth sx={{ mt: 2 }}>
                   <InputLabel>{el.label}</InputLabel>
                   <Controller
                     name={el.name}
@@ -96,7 +97,7 @@ export default function CustomForm({
               );
             case "date":
               return (
-                <FormControl fullWidth sx={{ mt: 3 }}>
+                <FormControl key={el.name} fullWidth sx={{ mt: 3 }}>
                   <Controller
                     name={el.name}
                     control={control}
@@ -118,7 +119,7 @@ export default function CustomForm({
         <Grid container justifyContent="flex-end">
           {handleClose && (
             <Button
-              onClick={() => handleClose()}
+              onClick={() => handleClose('close')}
               variant="contained"
               color="primary"
               sx={{ mt: 2 }}

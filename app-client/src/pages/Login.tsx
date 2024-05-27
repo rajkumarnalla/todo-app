@@ -24,7 +24,7 @@ const schema = yup.object().shape({
 
 export default function Login() {
   const [toastInfo, setToastInfo] = useState({
-    show: true,
+    show: false,
     message: "",
     severity: "",
   });
@@ -59,8 +59,6 @@ export default function Login() {
     });
   };
 
-  const handleClose = () => {};
-
   const submitLoginData = async (payload: LoginUser) => {
     try {
       const { data, token: authToken } = await login(payload);
@@ -71,7 +69,7 @@ export default function Login() {
     } catch (err) {
       setToastInfo({
         show: true,
-        message: "Login failed, try again",
+        message: "Login failed, Please try again",
         severity: "error",
       });
     }

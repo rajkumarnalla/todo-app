@@ -106,6 +106,12 @@ export default function Registration() {
       justifyContent="center"
       style={{ minHeight: "100vh" }}
     >
+      <Toast
+        open={toastInfo.show}
+        message={toastInfo.message}
+        severity={toastInfo.severity}
+        handleClose={handleToastClose}
+      />
       <Grid item xs={12} sm={6} alignItems={"center"} justifyContent={"center"}>
         <Paper
           elevation={3}
@@ -116,27 +122,33 @@ export default function Registration() {
             margin: "auto",
           }}
         >
-          <Typography
-            variant="h5"
-            component="h2"
-            gutterBottom
-            style={{ textAlign: "center" }}
-          >
-            New User
-          </Typography>
-          <Toast
-            open={toastInfo.show}
-            message={toastInfo.message}
-            severity={toastInfo.severity}
-            handleClose={handleToastClose}
-          />
-          <CustomForm
-            elements={elements}
-            yupSchema={schema}
-            handleFormSubmit={handleFormSubmit}
-          />
+          {!userCreated && <>
+            <Typography
+              variant="h5"
+              component="h2"
+              gutterBottom
+              style={{ textAlign: "center" }}
+            >
+              New User
+            </Typography>
+            <CustomForm
+              elements={elements}
+              yupSchema={schema}
+              handleFormSubmit={handleFormSubmit}
+            />
+          </>}
 
-          {userCreated && <Link to="/login">Login</Link>}
+          {userCreated && <>
+            <Typography
+              variant="h5"
+              component="h2"
+              gutterBottom
+              style={{ textAlign: "center" }}
+            >
+              Goto Login Page
+            </Typography>
+            <Link to="/login">Login</Link>
+          </>}
         </Paper>
       </Grid>
     </Grid>

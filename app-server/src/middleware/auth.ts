@@ -24,7 +24,11 @@ export async function auth(req: Request, res: Response, next: NextFunction) {
     const authToken = token.split("Bearer ")[1];
     req["user"] = decodeAccessToken(authToken);
     next();
-  } catch (err) {
+  } catch (err: any) {
+    if (err?.message === 'jwt expired') {
+      next({status: 401, message: 'TOKEN_EXPIRED'});
+      return;
+    }
     next(err);
   }
 }

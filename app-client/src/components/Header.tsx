@@ -33,15 +33,16 @@ export function Header() {
   };
 
   const handleLogout = async () => {
-    // Implement logout functionality here
     handleClose();
     clearUserData();
+    
     await logout();
+
     navigate("/login");
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" style={{position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1}}>
       <Toolbar>
         <Grid container alignItems="center">
           <Grid item xs={6} md={4}>
@@ -63,16 +64,6 @@ export function Header() {
                 Users
               </Link>
             )}
-            <IconButton
-              // onClick={handleMenu}
-              size="large"
-              edge="end"
-              color="inherit"
-              aria-label="profile"
-            >
-              <AccountCircleIcon />
-            </IconButton>
-            <span style={{ textTransform: "capitalize" }}>{user?.role}</span>
             <Button
               startIcon={<ExitToAppIcon />}
               onClick={handleMenu}

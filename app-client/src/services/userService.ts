@@ -1,13 +1,13 @@
 import { USER_BASE_URL, User } from "../utils";
+import axiosInstance from "./axiosInstance";
 
 export async function getUsers(): Promise<User[]> {
   try {
     let uri = USER_BASE_URL;
-    const data = await fetch(uri);
+    const {data} = await axiosInstance.get(uri);
 
-    return data.json();
+    return data;
   } catch (err) {
-    console.log(err);
     throw Error("Reqest Failed");
   }
 }
@@ -15,18 +15,10 @@ export async function getUsers(): Promise<User[]> {
 export async function newUser(payload: User): Promise<string> {
   try {
     let uri = USER_BASE_URL;
-    let options: RequestInit = {
-      method: "post",
-      body: JSON.stringify(payload),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    const data = await fetch(uri, options);
+    const {data} = await axiosInstance.post(uri, payload);
 
     return "success";
   } catch (err) {
-    console.log(err);
     throw Error("Reqest Failed");
   }
 }
@@ -34,14 +26,11 @@ export async function newUser(payload: User): Promise<string> {
 export async function deleteUser(taskId: number): Promise<string> {
   try {
     let uri = USER_BASE_URL + "/" + taskId;
-    let options: RequestInit = {
-      method: "delete",
-    };
-    const data = await fetch(uri, options);
+    
+    await axiosInstance.get(uri);
 
     return "success";
   } catch (err) {
-    console.log(err);
     throw Error("Reqest Failed");
   }
 }

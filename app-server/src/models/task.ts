@@ -47,6 +47,11 @@ Task.init(
     sequelize, // passing the `sequelize` instance is required
     underscored: true,
     paranoid: true,
+    getterMethods: {
+      formattedDueDate() {
+        return this.dueDate ? this.dueDate.toISOString().split('T')[0] : null;
+      }
+    }
   }
 );
 
