@@ -22,7 +22,8 @@ import {
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 import { ReactNode, useEffect, useState } from "react";
-import { useCommonTaskContext } from "../context/CommonTaskContext";
+import { useAppDispatch, useAppSelector } from "../store";
+import { setFilter } from "../store/reducers/taskSlice";
 
 export interface FilterProps {
   [key: string]: string;
@@ -45,15 +46,17 @@ export default function DataTableFilter({
   setToastInfo,
   handleClose,
 }: FilterMainProps) {
-  const {filters: {fromDate, toDate, status}, updateFilters} = useCommonTaskContext();
+  const {filters: {fromDate, toDate, status}} = useAppSelector(state => state.task);
+  const dispatch = useAppDispatch();
 
   const handleStatusChange: statusFilterChangeFn = (ev: SelectChangeEvent<string[]>) => {
     const {value} = ev.target;
-    updateFilters({
+    
+    dispatch(setFilter({
       fromDate,
       toDate,
       status: Array.isArray(value) ? value.join(',') : value
-    });
+    }));
   };
 
   const handleDateFilterChange = (key: string): dateFilterChangeFn => (value: Dayjs | null) => {
@@ -63,16 +66,16 @@ export default function DataTableFilter({
       status
     }
     data[key] = dayjs(value).format("DD/MM/YYYY");
-    updateFilters(data);
+    dispatch(setFilter(data));
   }
 
   const clearDate = (key: string):dateClearFn => () => {
-    updateFilters({
+    dispatch(setFilter({
       fromDate,
       toDate,
       status,
       [key]: ''
-    })
+    }))
   }
 
   useEffect(() => {

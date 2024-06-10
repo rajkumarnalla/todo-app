@@ -7,6 +7,8 @@ import Tasks from "./pages/Tasks";
 import NotFound from "./components/NotFound";
 import ProtectedRoute from "./components/ProtectedRouter";
 import ErrorPage from "./components/ErrorElement";
+import { Provider } from "react-redux";
+import store from "./store";
 
 const router = createBrowserRouter([
   {
@@ -38,7 +40,9 @@ const router = createBrowserRouter([
 
 const App = function () {
   return (
+    <Provider store={store}>
       <RouterProvider router={router} />
+    </Provider>
   )
 };
 

@@ -3,11 +3,12 @@ import path from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 import cors from "cors";
+import { auth } from "./middleware/auth";
 
 import authRouter from "./routes/auth";
 import usersRouter from "./routes/users";
 import taskRouter from "./routes/tasks";
-import { auth } from "./middleware/auth";
+import nonProfitsRouter from "./routes/nonProfits";
 
 require('dotenv').config();
 
@@ -35,6 +36,7 @@ app.use(
 app.use("/auth", authRouter);
 app.use("/users", usersRouter);
 app.use("/tasks", auth, taskRouter);
+app.use("/non-profits", nonProfitsRouter);
 
 // Global error handler
 app.use((err: any, req: Request, res: Response, next: NextFunction): void => {
